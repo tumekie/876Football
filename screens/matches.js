@@ -7,7 +7,7 @@ import DatePicker from 'react-native-modern-datepicker';
 // get the current day in the format of the API 'YYYYMMDD'
 const date = new Date();
 
-let day = (date.getDate() + 0).toString().padStart(2, '0'); // Adding 1 to get the following day
+let day = (date.getDate() + 1).toString().padStart(2, '0'); // Adding 1 to get the following day
 let month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 to get the correct month index
 let year = date.getFullYear().toString();
 
@@ -38,14 +38,14 @@ const Matches = () => {
   useEffect(() => {
     fetchFixtures(fullDate); // Fetch fixtures for the current day initially
   }, []);
-  //console.log("INITIAL DATE:", fullDate);
 
   useEffect(() => {
     if (selectedDate) {
+      //console.log("SELECTED DATE:", selectedDate);
       fetchFixtures(formatDate(selectedDate)); // Fetch fixtures when the user selects a different date
     }
   }, [selectedDate]);
-  //console.log("SELECTED DATE:", selectedDate);
+  
 
   const fetchFixtures = async (dateParam) => {
     const options = {

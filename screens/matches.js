@@ -5,7 +5,7 @@ import DatePicker from 'react-native-modern-datepicker';
 
 // get the current day in the format of the API 'YYYYMMDD'
 const date = new Date();
-let day = (date.getDate() + 1).toString().padStart(2, '0'); // Adding 1 to get the following day
+let day = (date.getDate() + 0).toString().padStart(2, '0'); // Adding 1 to get the following day
 let month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 to get the correct month index
 let year = date.getFullYear().toString();
 let fullDate = year.concat(month, day);
@@ -66,7 +66,7 @@ const Matches = () => {
         ].includes(fixture.league.id)
       );
       setFixtures(filteredFixtures);
-      console.log(filteredFixtures);
+      //console.log(filteredFixtures);
     } catch (error) {
       console.error('Error fetching fixtures:', error);
     }
@@ -106,14 +106,15 @@ const Matches = () => {
       </Modal>
       {fixtures.map((fixture, index) => (
         <View key={index} style={styles.fixtureContainer}>
+          {fixture == null ? <Text style={styles.fixtureText2}>No Fixtures Available For This Date</Text> : null}
           <Text style={styles.fixtureText}>
             {leagueImageMap[fixture.league.id] && (
               <Image source={leagueImageMap[fixture.league.id]} style={styles.image} />
             )}
             {fixture.league.name}
           </Text>
-          {fixture.time_status === 1 ? <Text style={styles.live}>LIVE</Text> : null}
-          {fixture.time_status === 3 ? <Text style={styles.fixtureText2}>FT</Text> : null}
+          {fixture.time_status == 1 ? <Text style={styles.live}>LIVE</Text> : null}
+          {fixture.time_status == 3 ? <Text style={styles.fixtureText2}>FT</Text> : null}
           <Text style={styles.fixtureText2}>{fixture.home.name}</Text>
           <Text style={styles.fixtureText2}>VS</Text>
           <Text style={styles.fixtureText2}>{fixture.away.name}</Text>

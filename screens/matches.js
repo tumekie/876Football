@@ -25,6 +25,12 @@ const leagueImageMap = {
   '10041062': require('../assets/sweden.png'),
   '10041006': require('../assets/bulgaria.png'),
   '10041058': require('../assets/denmark.png'),
+  '10041282': require('../assets/england.png'),
+  '10041110': require('../assets/spain.png'),
+  '10042035': require('../assets/portugal.png'),
+  '10041077': require('../assets/turkey.png'),
+  '10041042': require('../assets/ukraine.png'),
+  '10041304': require('../assets/slovenia.png'),
 };
  
 const Matches = () => {
@@ -34,9 +40,7 @@ const Matches = () => {
 
   useEffect(() => {
     if (selectedDate) {
-      //console.log("SELECTED DATE:", selectedDate);
       const formattedDate = selectedDate.split('/').join(''); // format the selected date from the user to API format
-      //console.log("Formated DATE:", formattedDate);
       fetchFixtures(formattedDate); // Fetch fixtures when the user selects a different date   
     }
   }, [selectedDate]);
@@ -58,11 +62,12 @@ const Matches = () => {
 
     try {
       const response = await axios.request(options);
-      //console.log(response.data.results);
+      console.log(response.data.results);
       const filteredFixtures = response.data.results.filter((fixture) =>
         [
           '10037429', '10041424', '10077222', '10069418', '10047168', '10050234', '10078898',
-          '10041018', '10041036', '10041369', '10041062', '10041006', '10041058'
+          '10041018', '10041036', '10041369', '10041062', '10041006', '10041058', '10041282',
+          '10041110', '10042035', '10041077', '10041042', '10041304'
         ].includes(fixture.league.id)
       );
       setFixtures(filteredFixtures);
@@ -104,13 +109,15 @@ const Matches = () => {
           </View>
         </View>
       </Modal>
-      {fixtures.map((fixture, index) => (
+      {fixtures.length === 0 ? (
+        <Text style={styles.container2}>No Fixtures Available For This Date</Text> 
+      ) : (
+      fixtures.map((fixture, index) => (
         <View key={index} style={styles.fixtureContainer}>
-          {fixture == null ? <Text style={styles.fixtureText2}>No Fixtures Available For This Date</Text> : null}
-          <Text style={styles.fixtureText}>
+          <Text style={styles.fixtureText}> {" " /* add space */} 
             {leagueImageMap[fixture.league.id] && (
               <Image source={leagueImageMap[fixture.league.id]} style={styles.image} />
-            )}
+            )} {" " /* add space */} 
             {fixture.league.name}
           </Text>
           {fixture.time_status == 1 ? <Text style={styles.live}>LIVE</Text> : null}
@@ -120,7 +127,7 @@ const Matches = () => {
           <Text style={styles.fixtureText2}>{fixture.away.name}</Text>
           <Text style={styles.fixtureText2}>{fixture.ss}</Text>
         </View>
-      ))}
+      )))}
     </ScrollView>
   );
 };
@@ -130,6 +137,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
+  },
+  container2: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingTop: 250,
+    textAlign: 'center',
+    marginHorizontal: 16,
   },
   fixtureContainer: {
     marginBottom: 8,
